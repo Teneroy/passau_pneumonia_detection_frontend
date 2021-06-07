@@ -1,6 +1,6 @@
 <template>
   <main>
-    <section>
+    <section >
       <article>
         <h1>Pneumonia detection system</h1>
         <p>
@@ -24,5 +24,26 @@ export default {
 </script>
 
 <style scoped>
+  main {
+    max-width: 1100px;
+    min-width: 500px;
+    width: 60%;
+    margin: auto;
+    background-color: #fff;
+    padding: 0 20px 20px 20px;;
+    box-shadow: 0 2px 2px rgba(0,0,0,.2);
+  }
 
+  p {
+    text-align: justify;
+  }
+
+  h1 {
+    background-color: rgba(0,141,201,0.85);
+    color: #ffffff;
+    padding: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+    font-size: 24px;
+  }
 </style>

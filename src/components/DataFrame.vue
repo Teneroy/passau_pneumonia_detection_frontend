@@ -15,9 +15,7 @@ export default {
 <style scoped>
 
 #data_frame_widget {
-  width: 70%;
   min-height: 200px;
-  max-height: 500px;
   margin: auto;
 }
 

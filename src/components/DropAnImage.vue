@@ -1,22 +1,26 @@
 <template>
-  <div class="drop"
-       :class="getClasses"
-       @dragover.prevent="dragOver"
-       @dragleave.prevent="dragLeave"
-       @drop.prevent="drop($event)">
+  <article>
+    <div class="drop"
+         :class="getClasses"
+         @dragover.prevent="dragOver"
+         @dragleave.prevent="dragLeave"
+         @drop.prevent="drop($event)">
 
-    <img :src="imageSource" v-if="imageSource" />
-    <h1 v-if="wrongFile">Wrong file type</h1>
-    <h1 v-if="!imageSource && !wrongFile">Drop an image</h1>
-
-  </div>
+      <img :src="imageSource" v-if="imageSource" />
+      <h1 v-if="wrongFile">Wrong file type</h1>
+      <h1 v-if="!imageSource && !wrongFile">Drop an image</h1>
+    </div>
+    <SendFileButton :image=imageSource />
+  </article>
 </template>
 
 
 
 <script>
+import SendFileButton from "@/components/SendFileButton";
 export default {
   name: 'DropAnImage',
+  components: {SendFileButton},
   data(){
     return {
       isDragging:false,
@@ -68,17 +72,23 @@ export default {
 
 <style scoped>
 .drop{
-  width: 100%;
+  width: auto;
   height: 100%;
-  background-color: #eee;
-  border:10px solid #eee;
+  background-color: #0093d517;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   transition: background-color .2s ease-in-out;
   font-family: sans-serif;
+  border: 1px solid #75aeca;
+  color: #008dc9;
 }
+
+.drop h1 {
+  padding: 2rem;
+}
+
 .isDragging{
   background-color: #999;
   border-color: #fff;
