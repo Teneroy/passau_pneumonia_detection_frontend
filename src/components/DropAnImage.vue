@@ -6,11 +6,12 @@
          @dragleave.prevent="dragLeave"
          @drop.prevent="drop($event)">
 
-      <img :src="imageSource" v-if="imageSource" />
+      <img id="data_image" :src="imageSource" v-if="imageSource" />
       <h1 v-if="wrongFile">Wrong file type</h1>
       <h1 v-if="!imageSource && !wrongFile">Drop an image</h1>
     </div>
     <SendFileButton :image=imageSource />
+    <canvas id="dstimg" ref="dstimg" class="imgcanvas"></canvas>
   </article>
 </template>
 

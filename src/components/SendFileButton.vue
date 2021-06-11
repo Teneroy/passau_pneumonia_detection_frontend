@@ -15,9 +15,10 @@ export default {
   },
   methods: {
     sendData() {
-      console.log(this.image);
-      const size = ImageProcessingService.extractImageSize(this.image);
-      const resizedImage = ImageProcessingService.resizeImage(this.image);
+      const size = ImageProcessingService.extractImageSizeById('data_image');
+      const image = ImageProcessingService.readImageById('data_image');
+      const grayScaleImage = ImageProcessingService.grayScaleImage(image);
+      const resizedImage = ImageProcessingService.resizeImage(grayScaleImage);
       ImageProcessingService.predictPneumonia(resizedImage, size).then(response => {
         console.log(response);
       });
