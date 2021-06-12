@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as cv from "opencv.js";
 
-const url = 'http://127.0.0.1:8080/api/';
+const url = 'http://127.0.0.1:5000/api';
 
 
 export default class ImageProcessingService {
@@ -17,11 +17,11 @@ export default class ImageProcessingService {
     }
 
     static resizeImage(image) {
-        let gray = new cv.Mat();
-        cv.cvtColor(image, gray, cv.COLOR_RGBA2GRAY)
+//        let gray = new cv.Mat();
+//        cv.cvtColor(image, gray, cv.COLOR_RGBA2GRAY)
         let dsize = new cv.Size(256, 256);
         let res = new cv.Mat();
-        cv.resize(gray, res, dsize, 0, 0, cv.INTER_AREA);
+        cv.resize(image, res, dsize, 0, 0, cv.INTER_AREA);
 
         //cv.imshow('dstimg', res)
         let mat = cv.matFromArray(256, 256, cv.CV_8UC1, res.data)
