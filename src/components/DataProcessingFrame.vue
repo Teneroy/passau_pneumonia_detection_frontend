@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p class="result-block">{{msg}}</p>
     <button class="action-button" v-on:click="sendData">Predict</button>
   </div>
 </template>
@@ -9,18 +10,38 @@
 import ImageProcessingService from '@/services/ImageProcessingService.js';
 
 export default {
-  name: "SendFileButton",
+  name: "DataProcessingFrame",
   props: {
     image: String
+  },
+  data() {
+    return {
+      probability: 0,
+      existence: false,
+      evaluated: false
+    }
+  },
+  created() {
+    this.probability = 0;
+    this.existence = false;
+    this.evaluated = false;
+  },
+  computed: {
+    msg : function () { return !this.evaluated ? '' : (this.existence ? 'Pneumonia presents on this picture with probability of ' + this.probability + ' percent'
+        : 'Pneumonia does not present on this picture with probability of ' + this.probability + ' percent') }
   },
   methods: {
     sendData() {
       const size = ImageProcessingService.extractImageSizeById('data_image');
       const image = ImageProcessingService.readImageById('data_image');
-      const grayScaleImage = ImageProcessingService.grayScaleImage(image);
-      const resizedImage = ImageProcessingService.resizeImage(grayScaleImage);
+      const rgbImage = ImageProcessingService.rgbImage(image);
+      const resizedImage = ImageProcessingService.resizeImage(rgbImage);
+      console.log(resizedImage);
       ImageProcessingService.predictPneumonia(resizedImage, size).then(response => {
-        console.log(response);
+        console.log(response.data);
+        this.probability = response.data.probability.toFixed(4);
+        this.existence = response.data.existence;
+        this.evaluated = true;
       });
     }
   }

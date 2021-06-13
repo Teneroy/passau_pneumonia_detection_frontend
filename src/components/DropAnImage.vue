@@ -10,18 +10,17 @@
       <h1 v-if="wrongFile">Wrong file type</h1>
       <h1 v-if="!imageSource && !wrongFile">Drop an image</h1>
     </div>
-    <SendFileButton :image=imageSource />
-    <canvas id="dstimg" ref="dstimg" class="imgcanvas"></canvas>
+    <DataProcessingFrame ref="dataProcessingFrame" :image=imageSource />
   </article>
 </template>
 
 
 
 <script>
-import SendFileButton from "@/components/SendFileButton";
+import DataProcessingFrame from "@/components/DataProcessingFrame";
 export default {
   name: 'DropAnImage',
-  components: {SendFileButton},
+  components: {DataProcessingFrame},
   data(){
     return {
       isDragging:false,
@@ -42,6 +41,7 @@ export default {
       this.isDragging = false
     },
     drop(e){
+      this.$refs.dataProcessingFrame.evaluated = 0;
       let files = e.dataTransfer.files
       this.wrongFile = false
       // allows only 1 file

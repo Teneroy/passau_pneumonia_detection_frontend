@@ -10,10 +10,10 @@ export default class ImageProcessingService {
         return cv.imread(imageId);
     }
 
-    static grayScaleImage(image) {
-        let gray = new cv.Mat();
-        cv.cvtColor(image, gray, cv.COLOR_RGBA2GRAY);
-        return gray;
+    static rgbImage(image) {
+        let rgb = new cv.Mat();
+        cv.cvtColor(image, rgb, cv.IMREAD_COLOR);
+        return rgb;
     }
 
     static resizeImage(image) {
@@ -24,8 +24,8 @@ export default class ImageProcessingService {
         cv.resize(image, res, dsize, 0, 0, cv.INTER_AREA);
 
         //cv.imshow('dstimg', res)
-        let mat = cv.matFromArray(256, 256, cv.CV_8UC1, res.data)
-        cv.imshow('dstimg', mat);
+        // let mat = cv.matFromArray(256, 256, cv.CV_8UC1, res.data)
+        // cv.imshow('dstimg', mat);
         return res;
     }
 
@@ -44,10 +44,11 @@ export default class ImageProcessingService {
     }
 
     static predictPneumonia(image, originalSize) {
+        console.log(image.data);
         return  axios.post(
             url + '/predictPneumonia',
             {
-                image: JSON.stringify(image.data),
+                image: image.data,
                 size: originalSize
             }
         );
