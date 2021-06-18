@@ -10,7 +10,6 @@
         </p>
       </article>
     </section>
-
     <DataFrame />
   </main>
 </template>
@@ -30,7 +29,7 @@ export default {
     width: 60%;
     margin: auto;
     background-color: #fff;
-    padding: 0 20px 20px 20px;;
+    padding: 0 20px 20px 20px;
     box-shadow: 0 2px 2px rgba(0,0,0,.2);
   }
 
