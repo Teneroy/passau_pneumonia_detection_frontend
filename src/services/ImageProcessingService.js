@@ -43,13 +43,14 @@ export default class ImageProcessingService {
         }
     }
 
-    static predictPneumonia(image, originalSize) {
+    static predictPneumonia(image, originalSize, forced) {
         console.log(image.data);
         return  axios.post(
             url + '/predictPneumonia',
             {
                 image: image.data,
-                size: originalSize
+                size: originalSize,
+                forced: forced
             }
         );
     }

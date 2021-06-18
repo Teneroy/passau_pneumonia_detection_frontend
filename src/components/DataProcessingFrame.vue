@@ -2,7 +2,8 @@
   <div>
     <p class="result-block">{{msg}}</p>
     <p class="error"></p>
-    <button class="action-button" v-on:click="sendData">Predict</button>
+    <button id="error_button" class="action-button" v-on:click="sendData(true)">I am sure, just do it!</button>
+    <button id="sending_button" class="action-button" v-on:click="sendData(false)">Predict</button>
   </div>
 </template>
 
@@ -32,10 +33,15 @@ export default {
         : 'Pneumonia does not present on this picture with probability of ' + this.probability + ' percent') }
   },
   methods: {
-    sendData() {
+    sendData(forced) {
       const preloader = document.querySelector('.preloader-block');
       const resultBlock = document.querySelector('.result-block');
-      const errorBlock = document.querySelector('.error')
+      const errorBlock = document.querySelector('.error');
+      const sendingButton = document.querySelector('#sending_button');
+      const errorButton = document.querySelector('#error_button');
+
+      sendingButton.style.display = 'inline-block';
+      errorButton.style.display = 'none';
 
       if(this.image == null) {
         errorBlock.textContent = 'Please, upload an image';
@@ -45,7 +51,7 @@ export default {
 
       resultBlock.classList.remove('result-detected');
       preloader.style.display = 'block';
-      resultBlock.style.display = 'flex';
+      resultBlock.style.display = 'none';
       errorBlock.style.display = 'none';
 
       const size = ImageProcessingService.extractImageSizeById('data_image');
@@ -53,8 +59,17 @@ export default {
       const rgbImage = ImageProcessingService.rgbImage(image);
       const resizedImage = ImageProcessingService.resizeImage(rgbImage);
 
-      ImageProcessingService.predictPneumonia(resizedImage, size).then(response => {
+      ImageProcessingService.predictPneumonia(resizedImage, size, forced).then(response => {
         console.log(response.data);
+        if(!response.data.isXray) {
+          errorBlock.textContent = 'It seems that this is not a chest x-ray image. Are you sure you want to evaluate it?';
+          errorBlock.style.display = 'flex';
+          preloader.style.display = 'none';
+          sendingButton.style.display = 'none';
+          errorButton.style.display = 'inline-block';
+          return;
+        }
+        resultBlock.style.display = 'flex';
         this.probability = response.data.probability.toFixed(4);
         this.existence = response.data.existence;
         this.evaluated = true;
@@ -107,5 +122,9 @@ export default {
   background-color: #dc143c52;
   border-color: darkred;
   color: darkred;
+}
+
+#error_button {
+  display: none;
 }
 </style>

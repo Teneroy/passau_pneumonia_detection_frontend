@@ -42,6 +42,13 @@ export default {
     },
     drop(e){
       this.$refs.dataProcessingFrame.evaluated = 0;
+      const resultBlock = document.querySelector('.result-block');
+      const errorBlock = document.querySelector('.error');
+      document.querySelector('#sending_button').style.display = 'inline-block';
+      document.querySelector('#error_button').style.display = 'none';
+
+      resultBlock.style.display = 'none';
+      errorBlock.style.display = 'none';
       let files = e.dataTransfer.files
       this.wrongFile = false
       // allows only 1 file
