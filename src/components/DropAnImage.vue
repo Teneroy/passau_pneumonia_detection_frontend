@@ -10,6 +10,7 @@
       <h1 v-if="wrongFile">Wrong file type</h1>
       <h1 v-if="!imageSource && !wrongFile">Drop an image</h1>
     </div>
+    <iframe id="visualization" width="100%" src=""></iframe>
     <DataProcessingFrame ref="dataProcessingFrame" :image=imageSource />
   </article>
 </template>
@@ -41,11 +42,13 @@ export default {
       this.isDragging = false
     },
     drop(e){
+      document.querySelector('#visualization').style.display = 'none';
       this.$refs.dataProcessingFrame.evaluated = 0;
       const resultBlock = document.querySelector('.result-block');
       const errorBlock = document.querySelector('.error');
       document.querySelector('#sending_button').style.display = 'inline-block';
       document.querySelector('#error_button').style.display = 'none';
+      document.querySelector('#viz_download').style.display = 'none';
 
       resultBlock.style.display = 'none';
       errorBlock.style.display = 'none';
@@ -105,5 +108,10 @@ img{
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+#visualization {
+  display: none;
+  border: 1px solid #75aeca;
 }
 </style>

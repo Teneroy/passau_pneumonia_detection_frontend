@@ -1,6 +1,7 @@
 <template>
   <div>
     <p class="result-block">{{msg}}</p>
+    <a href="" id="viz_download" class="action-button">Download the result</a>
     <p class="error"></p>
     <button id="error_button" class="action-button" v-on:click="sendData(true)">I am sure, just do it!</button>
     <button id="sending_button" class="action-button" v-on:click="sendData(false)">Predict</button>
@@ -10,6 +11,8 @@
 <script>
 
 import ImageProcessingService from '@/services/ImageProcessingService.js';
+
+const serverUrl = "http://127.0.0.1:5000/";
 
 export default {
   name: "DataProcessingFrame",
@@ -39,9 +42,14 @@ export default {
       const errorBlock = document.querySelector('.error');
       const sendingButton = document.querySelector('#sending_button');
       const errorButton = document.querySelector('#error_button');
+      const visualization = document.querySelector('#visualization');
+      const downloadLink = document.querySelector('#viz_download');
 
+
+      visualization.style.display = 'none';
       sendingButton.style.display = 'inline-block';
       errorButton.style.display = 'none';
+      downloadLink.style.display = 'none';
 
       if(this.image == null) {
         errorBlock.textContent = 'Please, upload an image';
@@ -73,8 +81,16 @@ export default {
         this.probability = response.data.probability.toFixed(4);
         this.existence = response.data.existence;
         this.evaluated = true;
-        if(this.existence)
+        if(this.existence) {
+          visualization.style.display = 'block';
+          downloadLink.style.display = 'block';
           resultBlock.classList.add('result-detected');
+          visualization.setAttribute("src", serverUrl + response.data.visualization);
+          downloadLink.setAttribute("href", serverUrl + response.data.visualization);
+          downloadLink.setAttribute("download", "pneumonia_xray");
+          const frameWidth = document.querySelector('#visualization').clientWidth;
+          visualization.setAttribute("height", frameWidth + "px");
+        }
         preloader.style.display = 'none';
       });
     }
@@ -125,6 +141,10 @@ export default {
 }
 
 #error_button {
+  display: none;
+}
+
+#viz_download {
   display: none;
 }
 </style>

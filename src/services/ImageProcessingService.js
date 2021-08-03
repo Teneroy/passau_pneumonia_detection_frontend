@@ -13,6 +13,7 @@ export default class ImageProcessingService {
     static rgbImage(image) {
         let rgb = new cv.Mat();
         cv.cvtColor(image, rgb, cv.IMREAD_COLOR);
+        console.log(rgb);
         return rgb;
     }
 
